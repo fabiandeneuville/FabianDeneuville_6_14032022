@@ -21,6 +21,9 @@ mongoose.connect(`mongodb+srv://${dbUserName}:${dbPassword}@cluster0.12gfd.mongo
 /* Creating the express app using the express method */
 const app = express();
 
+/* Creating a middleware using the .json method from express to get access to the request body */
+app.use(express.json());
+
 /* Specifying specific access control headers for all the response objects to allow cross-origin requests (and prevent CORS errors) */
 app.use((req, res, next) => {
     res.setHeader('Access-Control-Allow-Origin', '*');
