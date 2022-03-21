@@ -6,8 +6,8 @@ const express = require('express');
 /* Importing mongoose */
 const mongoose = require('mongoose');
 
+/* Using dotenv to hide DB connection informations */
 require('dotenv').config();
-
 const dbUserName = process.env.dbUserName;
 const dbPassword = process.env.dbPassword;
 
