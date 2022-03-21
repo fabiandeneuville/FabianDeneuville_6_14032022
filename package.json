@@ -17,6 +17,8 @@
   },
   "homepage": "https://github.com/fabiandeneuville/FabianDeneuville_6_14032022#readme",
   "dependencies": {
-    "express": "^4.17.3"
+    "dotenv": "^16.0.0",
+    "express": "^4.17.3",
+    "mongoose": "^6.2.7"
   }
 }
