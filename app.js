@@ -6,6 +6,9 @@ const express = require('express');
 /* Importing mongoose */
 const mongoose = require('mongoose');
 
+/* Importing user router */
+const userRoutes = require('./routes/user')
+
 /* Using dotenv to hide DB connection informations */
 require('dotenv').config();
 const dbUserName = process.env.dbUserName;
@@ -31,6 +34,9 @@ app.use((req, res, next) => {
     res.setHeader('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, PATCH, OPTIONS');
     next();
   });
+
+/* Saving user routes */
+app.use('/api/auth', userRoutes);
 
 /* Exporting the express app to be used on other files */
 module.exports = app;
