@@ -1,7 +1,7 @@
 /******************** SAUCE MODEL CONFIGURATION ********************/
 
 /* Importing express */
-const express = require('mongoose');
+const mongoose = require('mongoose');
 
 /* Creating sauce schema */
 const sauceSchema = mongoose.Schema({
