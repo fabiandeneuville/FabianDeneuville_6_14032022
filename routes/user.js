@@ -1,4 +1,4 @@
-/******************** USER ROOTER CONFIGURATION ********************/
+/******************** USER ROUTER CONFIGURATION ********************/
 
 /* Importing express */
 const express = require('express');
