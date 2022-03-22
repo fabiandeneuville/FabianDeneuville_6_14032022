@@ -20,7 +20,7 @@ const storage = multer.diskStorage({
         /* Defining files name using the original name, where the spaces are replaced by _ */
         const name = file.originalname.split(' ').join('_');
         /* Generating extension by picking in the MIME_TYPE dictionary the mimetype that fit the mimetype of the file */
-        const extension = MIME_TYPES[File.mimetype];
+        const extension = MIME_TYPES[file.mimetype];
         /* Creating the file name using a date stamp to make it unique */
         callback(null, name + Date.now() + '.' + extension);
     }

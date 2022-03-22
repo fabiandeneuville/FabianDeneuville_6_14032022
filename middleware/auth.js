@@ -14,7 +14,8 @@ module.exports = (req, res, next) => {
 
     /* Defining userId as the userId found in the decodedToken */
     const userId = decodedToken.userId;
-
+    
+    req.auth = {userId}
     /* If the userId in the request is different from the userId returned by the previous operation, throwing an error */
     if (req.body.userId && req.body.userId !== userId) {
         throw 'User UD non valable';

@@ -7,7 +7,13 @@ const express = require('express');
 const mongoose = require('mongoose');
 
 /* Importing user router */
-const userRoutes = require('./routes/user')
+const userRoutes = require('./routes/user');
+
+/* Importing sauce router */
+const sauceRoutes = require('./routes/sauce');
+
+
+const path = require('path')
 
 /* Using dotenv to hide DB connection informations */
 require('dotenv').config();
@@ -35,8 +41,15 @@ app.use((req, res, next) => {
     next();
   });
 
+
 /* Saving user routes */
 app.use('/api/auth', userRoutes);
+
+/* Saving sauce routes */
+app.use('/api/sauces', sauceRoutes);
+
+
+app.use('/images', express.static(path.join(__dirname, 'images')));
 
 /* Exporting the express app to be used on other files */
 module.exports = app;
