@@ -12,7 +12,7 @@ const userRoutes = require('./routes/user');
 /* Importing sauce router */
 const sauceRoutes = require('./routes/sauce');
 
-
+/* Importing Node path package */
 const path = require('path')
 
 /* Using dotenv to hide DB connection informations */
@@ -48,7 +48,7 @@ app.use('/api/auth', userRoutes);
 /* Saving sauce routes */
 app.use('/api/sauces', sauceRoutes);
 
-
+/* Creating a middleware to handle requests thad add images to the images folder */
 app.use('/images', express.static(path.join(__dirname, 'images')));
 
 /* Exporting the express app to be used on other files */
