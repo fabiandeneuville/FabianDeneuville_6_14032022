@@ -62,3 +62,36 @@ exports.deleteSauce = (req, res, next) => {
     })
     .catch(error => res.status(500).json({error}));
 };
+
+/* Creating the function to handle the likes and dislikes */
+exports.rateSauce = (req, res, next) => {
+  Sauce.findOne({_id: req.params.id})
+  .then((sauce) => {
+    /* The user has not already liked the sauce and the like choice is 1 (like) */
+    if(!sauce.usersLiked.includes(req.body.userId) && req.body.like === 1){
+      /* Updating the sauce datas by incrementing the likes (+1) and pushing the userId into the usersLiked array */
+      Sauce.updateOne({_id: req.params.id}, {$inc: {likes: +1}, $push: {usersLiked: req.body.userId}})
+      .then(() => res.status(200).json({message : "sauce likée"}))
+      .catch(error => res.status(400).json({error}));
+    /* The user has previously liked the sauce but cancels his choice (neutral) */
+    } else if(sauce.usersLiked.includes(req.body.userId) && req.body.like === 0){
+      /* Updating the sauce datas by decrementing the likes (-1) and pulling the userId from the usersLiked array */
+      Sauce.updateOne({_id: req.params.id}, {$inc: {likes: -1}, $pull: {usersLiked: req.body.userId}})
+      .then(() => res.status(200).json({message: "choix neutre"}))
+      .catch(error => res.status(400).json({error}));
+    /* The user has not already disliked the sauce and the like choice is -1 (dislike) */
+    } else if(!sauce.usersDisliked.includes(req.body.userId) && req.body.like === -1){
+      /* Updating the sauce datas by incrementing the dislikes (+1) and pushing the userId into the usersDisliked array */
+      Sauce.updateOne({_id: req.params.id}, {$inc: {dislikes: +1}, $push: {usersDisliked: req.body.userId}})
+      .then(() => res.status(200).json({message: "sauce dislikée"}))
+      .catch(error => res.status(400).json({error}));
+    /* The user has previously disliked the sauce but cancels his choice (neutral) */
+    } else if(sauce.usersDisliked.includes(req.body.userId) && req.body.like === 0){
+      /* Updating the sauce datas by decrementing the dislikes (-1) and pulling the userId from the usersDisliked array */
+      Sauce.updateOne({_id: req.params.id}, {$inc: {dislikes: -1}, $pull: {usersDisliked: req.body.userId}})
+      .then(() => res.status(200).json({message : "choix neutre"}))
+      .catch(error => res.status(400).json({error}))
+    }
+  })
+  .catch(error => res.status(404).json({error}));
+};
