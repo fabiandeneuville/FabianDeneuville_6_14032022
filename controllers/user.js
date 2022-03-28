@@ -9,8 +9,29 @@ const jwt = require('jsonwebtoken')
 /* Importing User model */
 const User = require('../models/User');
 
+/* Importing email-validator and password-validator plugins */
+const mailValidator = require('email-validator');
+const passwordValidator = require('password-validator');
+
+/* Creating a validation schema for passwords */
+const schema = new passwordValidator();
+
+schema
+.is().min(8)
+.is().max(16)
+.has().uppercase()
+.has().lowercase()
+.has().digits()
+.has().not().spaces()
+.has().symbols()
+
 /* Creating the signup middleware to create new users */
 exports.signup = (req, res, next) => {
+    if(!mailValidator.validate(req.body.email)){
+       return res.status(500).json({message : "Adresse email non valide"})
+    } else if (!schema.validate(req.body.password)){
+        return res.status(500).json({message : "Mot de passe non valide - Utilisez des majuscules, minuscules, chiffres et symboles, aucun espace, pour 8(min) à 16(max) caractères."})
+    } else {
     bcrypt.hash(req.body.password, 10)
     .then(hash => {
         const user = new User({
@@ -22,6 +43,7 @@ exports.signup = (req, res, next) => {
         .catch(error => res.status(400).json({error}));
     })
     .catch(error => res.status(500).json({error}))
+    }
 };
 
 /* Creating the login middleware to connect existing users */
