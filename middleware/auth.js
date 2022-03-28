@@ -3,6 +3,10 @@
 /* Importing jsonwebtoken */
 const jwt = require('jsonwebtoken');
 
+/* Using dotenv to hide JWT_SECRET_TOKEN */
+require('dotenv').config();
+const JWT_SECRET_TOKEN = process.env.JWT_SECRET_TOKEN;
+
 /* Exporting the authentication middleware */
 module.exports = (req, res, next) => {
     try {
@@ -10,7 +14,7 @@ module.exports = (req, res, next) => {
     const token = req.headers.authorization.split(' ')[1];
 
     /* Decoding token with the verify() function */
-    const decodedToken = jwt.verify(token, 'RANDOM_TOKEN_SECRET');
+    const decodedToken = jwt.verify(token, JWT_SECRET_TOKEN);
 
     /* Defining userId as the userId found in the decodedToken */
     const userId = decodedToken.userId;

@@ -6,6 +6,10 @@ const bcrypt = require('bcrypt');
 /* Importing jsonwebtoken */
 const jwt = require('jsonwebtoken')
 
+/* Using dotenv to hide JWT_SECRET_TOKEN */
+require('dotenv').config();
+const JWT_SECRET_TOKEN = process.env.JWT_SECRET_TOKEN;
+
 /* Importing User model */
 const User = require('../models/User');
 
@@ -62,7 +66,7 @@ exports.login = (req, res, next) => {
                 userId: user._id,
                 token: jwt.sign(
                     {userId: user._id},
-                    'RANDOM_TOKEN_SECRET',
+                    JWT_SECRET_TOKEN,
                     {expiresIn: '24h'}
                 )
             })
