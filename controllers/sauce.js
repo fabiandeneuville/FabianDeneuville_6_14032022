@@ -6,10 +6,21 @@ const Sauce = require('../models/Sauce');
 /* Importing the Node File System package */
 const fs = require('fs');
 
+/* Creating a regex to check the validity of the req inputs ro avoid injections */
+const regexInputs = /^[a-zA-Z0-9 _.,!()&]+$/
+
 /* creating the function to POST a new sauce */
 exports.createSauce = (req, res, next) => {
     const sauceObject = JSON.parse(req.body.sauce);
     delete sauceObject._id;
+    if(
+      !regexInputs.test(sauceObject.name)|| 
+      !regexInputs.test(sauceObject.manufacturer)||
+      !regexInputs.test(sauceObject.description)||
+      !regexInputs.test(sauceObject.mainPepper)||
+      !regexInputs.test(sauceObject.hear)){
+        return res.status(500).json({"message" : "Certains champs sont renseignés avec des caractères invalides"})
+    }
     const sauce = new Sauce({
       ...sauceObject,
       likes:0,
@@ -44,6 +55,14 @@ exports.modifySauce = (req, res, next) => {
       ...JSON.parse(req.body.sauce),
       imageUrl: `${req.protocol}://${req.get('host')}/images/${req.file.filename}`
     } : { ...req.body};
+    if(
+      !regexInputs.test(sauceObject.name)|| 
+      !regexInputs.test(sauceObject.manufacturer)||
+      !regexInputs.test(sauceObject.description)||
+      !regexInputs.test(sauceObject.mainPepper)||
+      !regexInputs.test(sauceObject.hear)){
+        return res.status(500).json({"message" : "Certains champs sont renseignés avec des caractères invalides"})
+    }
     Sauce.updateOne({_id: req.params.id}, {...sauceObject, _id: req.params.id})
     .then(() => res.status(200).json({message: 'Sauce modifiée'}))
     .catch(error => res.status(400).json({error}));
