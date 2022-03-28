@@ -13,6 +13,7 @@ const regexInputs = /^[a-zA-Z0-9 _.,!()&]+$/
 exports.createSauce = (req, res, next) => {
     const sauceObject = JSON.parse(req.body.sauce);
     delete sauceObject._id;
+    /* Checking the validity of the req inputs to avoid injection */
     if(
       !regexInputs.test(sauceObject.name)|| 
       !regexInputs.test(sauceObject.manufacturer)||
@@ -55,6 +56,7 @@ exports.modifySauce = (req, res, next) => {
       ...JSON.parse(req.body.sauce),
       imageUrl: `${req.protocol}://${req.get('host')}/images/${req.file.filename}`
     } : { ...req.body};
+    /* Checking the validity of the req inputs to avoid injection */
     if(
       !regexInputs.test(sauceObject.name)|| 
       !regexInputs.test(sauceObject.manufacturer)||
