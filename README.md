@@ -43,7 +43,8 @@ Notre mission est de développer une **API REST sécurisée** pour cette applica
 
 #### Packages utilisés : ####
 
-- **bcrypt :** pour le cryptage des mots de passe grâce à son algorithme unidirectionnel 
+- **bcrypt :** pour le cryptage des mots de passe grâce à son algorithme unidirectionnel
+- **crypto-js :** pour le cryptage du mail avant l'enregistrement dans la base de données
 - **dotenv :** pour l'utilisation des variables d'environnement 
 - **email-validator :** pour la validation des adresses mail lors de l'inscription
 - **http :** package natif de node pour la création du serveur
