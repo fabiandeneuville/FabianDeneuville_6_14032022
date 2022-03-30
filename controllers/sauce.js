@@ -7,7 +7,7 @@ const Sauce = require('../models/Sauce');
 const fs = require('fs');
 
 /* Creating a regex to check the validity of the req inputs ro avoid injections */
-const regexInputs = /^[a-zA-Z0-9 _.,!()&]+$/
+const regexInputs = /^[a-zA-Z0-9 _.,!()&éèàçùîï]+$/
 
 /* creating the function to POST a new sauce */
 exports.createSauce = (req, res, next) => {
