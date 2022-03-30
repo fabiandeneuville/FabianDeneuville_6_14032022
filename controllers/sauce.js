@@ -112,6 +112,8 @@ exports.rateSauce = (req, res, next) => {
       Sauce.updateOne({_id: req.params.id}, {$inc: {dislikes: -1}, $pull: {usersDisliked: req.body.userId}})
       .then(() => res.status(200).json({message : "choix neutre"}))
       .catch(error => res.status(400).json({error}))
+    } else {
+      return res.status(401).json({message: "l'opération n'a pas pu être effectuée"})
     }
   })
   .catch(error => res.status(404).json({error}));
