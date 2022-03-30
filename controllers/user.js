@@ -3,6 +3,9 @@
 /* Importing bcrypt */
 const bcrypt = require('bcrypt');
 
+/* Importing crypto-js */
+const cryptoJs = require('crypto-js');
+
 /* Importing jsonwebtoken */
 const jwt = require('jsonwebtoken')
 
@@ -36,10 +39,11 @@ exports.signup = (req, res, next) => {
     } else if (!schema.validate(req.body.password)){
         return res.status(500).json({message : "Mot de passe non valide - Utilisez des majuscules, minuscules, chiffres et symboles, aucun espace, pour 8(min) à 16(max) caractères."})
     } else {
+    const cryptedEmail = cryptoJs.SHA256(req.body.email, process.env.EMAIL_ENCRYPTION_KEY).toString();
     bcrypt.hash(req.body.password, 10)
     .then(hash => {
         const user = new User({
-            email: req.body.email,
+            email: cryptedEmail,
             password: hash
         });
         user.save()
@@ -52,7 +56,8 @@ exports.signup = (req, res, next) => {
 
 /* Creating the login middleware to connect existing users */
 exports.login = (req, res, next) => {
-    User.findOne({email: req.body.email})
+    const cryptedEmail = cryptoJs.SHA256(req.body.email, process.env.EMAIL_ENCRYPTION_KEY).toString();
+    User.findOne({email: cryptedEmail})
     .then(user => {
         if(!user){
             return res.status(401).json({message: "Aucun utilisateur ne correspond !"})
