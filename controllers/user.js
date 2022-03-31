@@ -34,11 +34,14 @@ schema
 
 /* Creating the signup middleware to create new users */
 exports.signup = (req, res, next) => {
+    /* Checking email validity */
     if(!mailValidator.validate(req.body.email)){
        return res.status(500).json({message : "Adresse email non valide"})
+    /* Checking password validity */
     } else if (!schema.validate(req.body.password)){
         return res.status(500).json({message : "Mot de passe non valide - Utilisez des majuscules, minuscules, chiffres et symboles, aucun espace, pour 8(min) à 16(max) caractères."})
     } else {
+    /* If email and password are valid, encrypting email and password before creating new user */
     const cryptedEmail = cryptoJs.SHA256(req.body.email, process.env.EMAIL_ENCRYPTION_KEY).toString();
     bcrypt.hash(req.body.password, 10)
     .then(hash => {
@@ -46,6 +49,7 @@ exports.signup = (req, res, next) => {
             email: cryptedEmail,
             password: hash
         });
+        /* Saving the user in the database */
         user.save()
         .then(() => res.status(201).json({message : 'Utilisateur créé'}))
         .catch(error => res.status(400).json({error}));
@@ -56,17 +60,20 @@ exports.signup = (req, res, next) => {
 
 /* Creating the login middleware to connect existing users */
 exports.login = (req, res, next) => {
+    /* Encrypting the email to find the user in the database */
     const cryptedEmail = cryptoJs.SHA256(req.body.email, process.env.EMAIL_ENCRYPTION_KEY).toString();
     User.findOne({email: cryptedEmail})
     .then(user => {
         if(!user){
             return res.status(401).json({message: "Aucun utilisateur ne correspond !"})
         }
+        /* Comparing request password with user password */
         bcrypt.compare(req.body.password, user.password)
         .then(valid => {
             if(!valid){
                 return res.status(401).json({message : "Mot de passe incorrect !"})
             }
+            /* If the user is found, returning userId and authentication's token */
             res.status(200).json({
                 userId: user._id,
                 token: jwt.sign(
