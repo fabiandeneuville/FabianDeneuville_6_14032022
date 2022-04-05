@@ -80,6 +80,12 @@ exports.modifySauce = (req, res, next) => {
 exports.deleteSauce = (req, res, next) => {
     Sauce.findOne({_id: req.params.id})
     .then(sauce => {
+      if (!sauce){
+        return res.status(404).json({error: 'Sauce non trouvée !'});
+      }
+      if (sauce.userId !== req.auth.userId){
+        return res.status(403).json({error: 'Requête non autorisée !'})
+      }
       /* Retrieving of the filename in the imageUrl */
       const filename = sauce.imageUrl.split('/images')[1];
       /* Deleting image file */
@@ -90,7 +96,7 @@ exports.deleteSauce = (req, res, next) => {
         .catch(error => res.status(400).json({error}))
       })
     })
-    .catch(error => res.status(500).json({error}));
+    .catch(error => res.status(500).json({error : "Sauce non trouvée !"}));
 };
 
 /* Creating the function to handle the likes and dislikes */
