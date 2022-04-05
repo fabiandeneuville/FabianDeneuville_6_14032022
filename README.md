@@ -31,6 +31,18 @@ Depuis le dossier précédement créé, clonez le repository de l'API avec la co
 Depuis le dossier backend, installez les dépendances avec la commande :
 <pre><code>npm install</code></pre>
 
+#### 3. Création d'une base de données noSQL MongoDB ####
+
+Rendez-vous sur le site de [MongoDb](https://account.mongodb.com/) et créez un compte.
+
+Une fois le compte créé, créez votre base de données en veillant à la configurer de sorte à ce que l'utilisateur puisse exécuter l'application sur sa propre machine :
+<pre>Network Access -> Allow access from anywhere</pre>
+
+Une fois la base de données créé, vous devriez avoir :
+- Un identifiant de connexion à la base de données
+- Un mot de passe de connexion à la base de données
+
+#### 4. Configuration des variables d'environnement ####
 A la racine du dossier backend, créez un fichier .env dans lequel seront renseignés vos identifiants de connexion à MongoDB et les différentes chaînes de cryptage :
 
 <pre><code>dbUserName = identifiant de connexion à la base de données
